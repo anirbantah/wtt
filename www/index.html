@@ -148,7 +148,7 @@
 			</footer><!-- /footer -->
 
 
-			<div data-role="popup" id="truckdetailsPopup" data-theme="a" class="ui-corner-all">
+<div data-role="popup" id="truckdetailsPopup" data-theme="a" class="ui-corner-all">
                         <div class="popUp">
                             
                             <div class="listGroup">
@@ -165,23 +165,73 @@
                                     </form>
                                 </div>
                                 <div class="bar bar-default">
-                                    <a class="ui-link" href="#">Choice <small>Steak Tips</small></a>
+                            <label>Sauce</label>
+                            <div class="ui-grid-a">
+                                <div class="ui-block-a">
+                                    <input type="radio" id="MediaumSalsa" name="Saucerd" data-theme="a" value="Mediaum Salsa" />
+                                    <label for="MediaumSalsa">Mediaum Salsa</label>
                                 </div>
+                                <div class="ui-block-b">
+                                    <input type="radio" id="HotSalsa" name="Saucerd" data-theme="a" value="Hot Salsa"/>
+                                    <label for="HotSalsa">Hot Salsa</label>
+                                </div>
+                            </div>
+                        </div>
                                 <div class="bar bar-default">
-                                    <a class="ui-link" href="#">Extras <small>Lettuce, Tomato, Pickles, Onions</small></a>
-                                </div>
-                                <div class="bar bar-default">
-                                    <a class="ui-link" href="#">Special Instructions <small>(additional charges may apply)</small></a>
-                                </div>
+                            <label style="width: 100%">Special Instruction (Additional Changes May Apply)</label>
+                            <textarea id="descprtn"></textarea>
+                        </div>
                             </div>
                             
                         </div>
                         <div class="popUpFooter">
-                            <a href="#" data-rel="back" >OK</a>
+                            <a href="#" data-rel="back" onclick="storeVal();" >OK</a>
                         </div>
                     </div>
 		</div>
-		
+
+
+<!-- 			<div data-role="popup" id="truckdetailsPopup" data-theme="a" class="ui-corner-all">
+                <div class="popUp text-left">
+                   
+                    <form class="listGroup" action="" method="post">
+                        <div class="bar bar-default">
+                            <div class="increase-btn">
+                                <label for="name">Quantity</label>
+                                <div class="right">
+                                    <div class="dec button">-</div>
+                                
+                                    <input type="text" data-role="none" data-theme="none" value="1" id="Quantity" name="french-hens" disabled />
+                                    <div class="inc button">+</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar bar-default">
+                            <label>Sauce</label>
+                            <div class="ui-grid-a">
+                                <div class="ui-block-a">
+                                    <input type="radio" id="MediaumSalsa" name="Saucerd" data-theme="a" value="Mediaum Salsa" />
+                                    <label for="MediaumSalsa">Mediaum Salsa</label>
+                                </div>
+                                <div class="ui-block-b">
+                                    <input type="radio" id="HotSalsa" name="Saucerd" data-theme="a" value="Hot Salsa"/>
+                                    <label for="HotSalsa">Hot Salsa</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar bar-default">
+                            <label style="width: 100%">Special Instruction (Additional Changes May Apply)</label>
+                            <textarea id="descprtn"></textarea>
+                        </div>
+                    </form>
+                   
+                </div>
+                <div class="popUpFooter">
+                    <a href="javascript:void(0)" data-rel="back" onclick="storeVal();">OK</a>
+                </div>
+          
+       </div>
+		 -->
 		
 		<div data-role="page" id="termsOfUse">
 			<header data-role="header" data-id="my-header" data-position="fixed">
@@ -1128,8 +1178,10 @@
 		<script type="text/javascript" src="js/retina.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+   
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
-         <script type="text/javascript" src="js/facebookConnectPlugin.js"></script>
+       
         <script type="text/javascript">
             
             //facebook plugin
@@ -1198,9 +1250,26 @@
             
             ///ajax pages
             
-        
+        function storeVal(){
+
+        	var quty = $("#Quantity").val();
+        	var radio = $("input[name=Saucerd]:checked").val();
+        	var descprtn = $("#descprtn").val();
+        	var foodname = $.cookie("foodname");
+        	alert(foodname);
+
+        }	
+
+        function savename(name){
+
+
+				$.cookie("foodname", name);
+
+        }
+
+
         function searchResult(lat,longt,keyword){
-        	
+
         	 $.mobile.changePage("#searchResult");
 		
 		$("#searchrslt").fadeOut(500,function(){
@@ -1237,6 +1306,7 @@
 	function gotoDetailsRes(idv,lat,longt,busid){
 
 	 $.mobile.changePage("#truckDetails");
+	 alert(busid);
 
 	 $("#searchrsltDetls").fadeOut(500,function(){
 			 $(this).html('<img src="img/loader.GIF"  style="left:50%;top:50%;position:relative;margin-left:-16px;margin-top:200px;width:32px;height:25px;" >');

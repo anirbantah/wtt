@@ -1197,6 +1197,52 @@ p.split-text {
 .popUpFooter a:hover {
 	color: #000;
 }
+.listGroup .bar > a {padding-right: 55px;}
+.listGroup {text-align: left;}
+.ui-select {
+    margin: 10px -10px !important;
+}
+.ui-select .ui-corner-all {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+}
+.ui-checkbox input, .ui-radio input {
+    z-index: -1;
+}
+.ui-checkbox, .ui-radio {
+    margin: 0;
+}
+.popUp {
+    border-radius: inherit;
+    color: #000;
+    font-size: 16px;
+    padding: 10px 8px;
+    text-align: center;
+}
+.ui-checkbox .ui-btn, .ui-radio .ui-btn {
+    border: medium none;
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0;
+    padding: 7px 5px 7px 25px;
+    text-align: left;
+    white-space: nowrap;
+    z-index: 2;
+}
+.ui-checkbox .ui-btn.ui-btn-a:hover, .ui-radio .ui-btn.ui-btn-a:hover,
+.ui-checkbox .ui-btn.ui-btn-a:focus, .ui-radio .ui-btn.ui-btn-a:focus {
+    background: none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+}
+.ui-radio .ui-btn-icon-left:after {
+    left: 0;
+}
+.popUp .listGroup .bar {
+    padding: 5px 0;
+}
+
 /*.ui-panel-page-container {
 	overflow: hidden;
 }*/
