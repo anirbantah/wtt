@@ -47,7 +47,7 @@
                google.maps.event.addDomListener(window, 'load', initialize);
        </script>
     </head>
-    <body>
+    <body onload="onLoad()">
     	
     	
         <div data-role="page" id="home"> 
@@ -793,60 +793,19 @@
 				<a href="#" data-rel="back" data-position="left" class="back-btn" data-theme="none" ></a>
 				<a href="#mypanel" data-position="right" data-theme="none" class="menu-btn"></a>
 			</header><!-- /header -->
-			
-			<section data-role="content">
-				<div class="inner-content">
-					<div class="contactInfoHeader">	
-						<div class="headerTopBox">
-							<h2><a class="ui-link" href="#">Benny’s Crepe Cafe</a></h2>
-							<span class="icon-block location">Rings Fountain at Milk Street</span>
-							<div class="inline-icon">
-								<span class="icon-block time"><b>10am - 6:30pm</b></span>
-								<span class="icon-block order right"><b>Pickup: </b> 35 min</span>
-							</div>
-						</div>
-					</div>
-					<div class="fullWidth">
-						<table data-role="table" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe table-stroke ui-responsive" data-column-btn-theme="b" >
-							<thead>
-								<tr class="ui-bar-d ui-bar-blue">
-									<th>QTY</th>
-									<th>ITEM</th>
-									<th>PRICE</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th>1</th>
-									<td>
-									<p class="split-text">
-										Guacamole Taco Combo <small> + Medium Salsa</small>
-									</p></td>
-									<td>$8.00</td>
-									<td><a href="#" class="delete"></a></td>
-								</tr>
-								<tr>
-									<th>1</th>
-									<td>
-									<p class="split-text">
-										Guacamole Taco Combo <small> + Medium Salsa</small>
-									</p></td>
-									<td>$8.00</td>
-									<td><a href="#" class="delete"></a></td>
-								</tr>
 
-							</tbody>
-						</table>
-					</div>
-					<div class="total">
-						<h3>Total: <span>$16.00</span></h3>
-					</div>
-					<div class="addItem">
-						<a href="#addItem" class="addItemLink"></a>
-					</div>
-				</div>
-			</section><!-- /content -->
+			<section data-role="content" id="basktRed" >
+				</section>
+
+			
+
+
+
+
+
+
+			
+			<!-- /content -->
 			<footer data-role="footer" data-position="fixed" data-theme="b">
 				<a href="#popupExample" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn full-btn" >Proceed to checkout</a>
 			</footer><!-- /footer -->
@@ -1166,7 +1125,7 @@
 		    	<li><a href="#home"><span class="menu-home"></span>Home</a></li>
 		    	<li><a href="#howWorks"><span class="menu-howitworks"></span>How It Works</a></li>
 		    	<li><a href="#settings"><span class="menu-settings"></span>Settings</a></li>
-		    	<li><a href="#Basket"><span class="menu-basket"></span>Basket</a></li>
+		    	<li><a   onclick = "basketredirect();"><span class="menu-basket"></span>Basket</a></li>
 		    	<li><a href="#termsOfUse"><span class="menu-terms"></span>Terms of Use</a></li>
 		    	<li><a href="#privacyPolicy"><span class="menu-privacy"></span>Privacy Policy</a></li>
 		    	<li><a href="#logIn"><span class="menu-signin"></span>Sign In</a></li>
@@ -1185,7 +1144,17 @@
         <script type="text/javascript">
             
             //facebook plugin
-            
+
+            function onLoad() {
+            	alert('apiTest');
+			        document.addEventListener("deviceready", onDeviceReady, false);
+			           var deviceType = (navigator.userAgent.match(/iPad/i))  == "iPad" ? "iPad" : (navigator.userAgent.match(/iPhone/i))  == "iPhone" ? "iPhone" : (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" : (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
+		alert(deviceType);
+			    }
+
+    // Cordova is loaded and it is now safe to make calls Cordova methods
+    //
+
             var login = function () {
                
                 if (!window.cordova) {
@@ -1256,14 +1225,58 @@
         	var radio = $("input[name=Saucerd]:checked").val();
         	var descprtn = $("#descprtn").val();
         	var foodname = $.cookie("foodname");
-        	alert(foodname);
+        	var pricevaln = $.cookie("priceval");
 
+			if (typeof $.cookie("prevsName") === "undefined") {
+   				var string = quty+"##"+radio+"##"+descprtn+"##"+foodname+"##"+pricevaln+"=====";
+			}else{
+
+				var string = $.cookie("prevsName")+quty+"##"+radio+"##"+descprtn+"##"+foodname+"##"+pricevaln+"=====";
+			}
+        	
+        	$.cookie("prevsName", string);
+
+        	alert(string);
         }	
 
-        function savename(name){
+        function savename(name,priceval){
 
-
+        		$.cookie("priceval", priceval);
 				$.cookie("foodname", name);
+
+        }
+
+        function basketredirect (){
+
+				$.mobile.changePage("#Basket");
+
+				$("#basktRed").fadeOut(500,function(){
+				 $(this).html('<img src="img/loader.GIF"  style="left:50%;top:50%;position:relative;margin-left:-16px;margin-top:200px;width:32px;height:25px;" >');
+			 	$(this).show("fast");
+				});
+			
+		
+		$.ajax({
+	        type: "POST",
+	        url: "http://esolzdemos.com/lab1/whatthetrucks/basketpage.php",
+	        data: "string="+$.cookie("prevsName"),
+	        cache: false,
+	                success: function(html){
+	                var allval=html;
+	               
+					 $('#basktRed').fadeOut(500,function(){
+						 $(this).html(allval);
+						 $(this).fadeIn(500);
+						$('.delete').click(function() {
+									$(this).parent().parent().remove();
+							});
+					 });
+	                }
+	        });
+
+
+// Code to add
+
 
         }
 
