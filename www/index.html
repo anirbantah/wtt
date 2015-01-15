@@ -364,7 +364,7 @@
 									<a href="#" class="yahoo">yahoo</a>
 								</li>
 							</ul>
-                            <div id="fb-root"></div>
+                            
 						</div>
 					</div>
 				</div>
@@ -377,6 +377,7 @@
 				    <a href="#" data-role="button" class="footer-settings"></a>
 				</div>
 			</footer><!-- /footer -->
+			<div id="fb-root"></div>
 		</div>
 		
 		
@@ -1140,7 +1141,7 @@
    
         <script type="text/javascript" src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
-       
+        <script type="text/javascript" src="js/facebookConnectPlugin.js"></script>
         <script type="text/javascript">
             
             //facebook plugin
@@ -1152,70 +1153,96 @@
 		alert(deviceType);
 			    }
 
-    // Cordova is loaded and it is now safe to make calls Cordova methods
-    //
+    // For Facebook details
 
-            var login = function () {
-               
+var login = function () {
+	alert('test');
                 if (!window.cordova) {
+
                     var appId = prompt("630198093774852", "");
                     facebookConnectPlugin.browserInit(appId);
                 }
-                facebookConnectPlugin.login( ["email"],
-                                            function (response) { alert(JSON.stringify(response)) },
-                                            function (response) { alert(JSON.stringify(response)) });
+                facebookConnectPlugin.login( ["email"], 
+                    function (response) {  },
+                    function (response) {  });
+                facebookConnectPlugin.api("me/", [], function(result) {
+            alert("Result: " + JSON.stringify(result));
+            var res = JSON.stringify(result);
+            var responseData = JSON.parse(res);
+            alert("name " + responseData.name + "gender" + responseData
+            .gender);
+            facebookConnectPlugin.logout(function(response) {
+            alert(response);
+             }, function(error) {
+            alert("Logout failed: " + error);
+            });
+             }, function(error) {
+              alert("Failed: " + error);
+         });
             }
-        
-        var showDialog = function () {
-            facebookConnectPlugin.showDialog( { method: "feed" },
-                                             function (response) { alert(JSON.stringify(response)) },
-                                             function (response) { alert(JSON.stringify(response)) });
-        }
-        
-        var apiTest = function () {
-            facebookConnectPlugin.api( "me/?fields=id,email", ["user_birthday"],
-                                      function (response) { alert(JSON.stringify(response)) },
-                                      function (response) { alert(JSON.stringify(response)) });
-        }
-        
-        var logPurchase = function () {
-            facebookConnectPlugin.logPurchase(1.99, "USD",
-                                              function (response) { alert(JSON.stringify(response)) },
-                                              function (response) { alert(JSON.stringify(response)) });
-        }
-        
-        var logEvent = function () {
-            // For more information on AppEvent param structure see
-            // https://developers.facebook.com/docs/ios/app-events
-            // https://developers.facebook.com/docs/android/app-events
-            facebookConnectPlugin.logEvent("Purchased",
-                                           {
-                                           NumItems: 1,
-                                           Currency: "USD",
-                                           ContentType: "shoes",
-                                           ContentID: "HDFU-8452"
-                                           }, null,
-                                           function (response) { alert(JSON.stringify(response)) },
-                                           function (response) { alert(JSON.stringify(response)) });
-        }
-        
-        var getAccessToken = function () {
-            facebookConnectPlugin.getAccessToken(
-                                                 function (response) { alert(JSON.stringify(response)) },
-                                                 function (response) { alert(JSON.stringify(response)) });
-        }
-        
-        var getStatus = function () {
-            facebookConnectPlugin.getLoginStatus(
-                                                 function (response) { alert(JSON.stringify(response)) },
-                                                 function (response) { alert(JSON.stringify(response)) });
-        }
-        
-        var logout = function () { 
-            facebookConnectPlugin.logout( 
-                                         function (response) { alert(JSON.stringify(response)) },
-                                         function (response) { alert(JSON.stringify(response)) });
-        }
+           
+            var showDialog = function () { 
+                facebookConnectPlugin.showDialog( { method: "feed" }, 
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+                    
+            }
+            
+            var apiTest = function () { 
+                facebookConnectPlugin.api( "me/?fields=id,email", ["user_birthday"],
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+                    
+            }
+
+            var logPurchase = function () {
+                facebookConnectPlugin.logPurchase(1.99, "USD",
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+            }
+
+            var logEvent = function () {
+                // For more information on AppEvent param structure see
+                // https://developers.facebook.com/docs/ios/app-events
+                // https://developers.facebook.com/docs/android/app-events
+                facebookConnectPlugin.logEvent("Purchased",
+                    {
+                        NumItems: 1,
+                        Currency: "USD",
+                        ContentType: "shoes",
+                        ContentID: "HDFU-8452"
+                    }, null,
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+            }
+
+            var getAccessToken = function () { 
+                facebookConnectPlugin.getAccessToken( 
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+            }
+            
+            var getStatus = function () { 
+                facebookConnectPlugin.getLoginStatus( 
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+            }
+
+            var logout = function () { 
+                facebookConnectPlugin.logout( 
+                    function (response) { alert(JSON.stringify(response)) },
+                    function (response) { alert(JSON.stringify(response)) });
+            }
+
+
+
+
+
+
+
+
+    //
+
             
             ///ajax pages
             
